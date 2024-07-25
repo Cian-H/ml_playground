@@ -24,7 +24,7 @@ def get_qmnist(transform=None, target_transform=None):
 
 def collate_batch(batch):
     images, labels = zip(*batch)
-    images = torch.stack(images).squeeze(1)
+    images = torch.stack(images)
     labels = torch.tensor(labels)
     return images, labels
 

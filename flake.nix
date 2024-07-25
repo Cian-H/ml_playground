@@ -7,7 +7,13 @@
 
   outputs = { self, nixpkgs, utils }: utils.lib.eachDefaultSystem (system:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config = {
+          allowUnfree = true;
+          cudaSupport = true;
+        };
+      };
     in
     {
       devShell = pkgs.mkShell
@@ -19,10 +25,6 @@
 
           buildInputs = with pkgs; [
             python312
-            python312Packages.scikit-learn
-            python312Packages.torch
-            python312Packages.torchvision
-            python312Packages.xgboost
           ];
         };
     }
