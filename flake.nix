@@ -24,7 +24,9 @@
           NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
 
           buildInputs = with pkgs; [
-            python312
+            # python312
+            rye
+            uv
           ];
         };
     }
