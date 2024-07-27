@@ -11,4 +11,7 @@ be more like the ramblings of a madman converted into code.
 
 # Experiments
 
-1. Simple QMNIST classifier using a simple FFNN
+1. QMNIST classifier using a simple FFNN
+2. QMNIST classifier using a CNN
+3. QMNIST classifier using a transformer encoder
+3. QMNIST classifier using a simple boosted tree
