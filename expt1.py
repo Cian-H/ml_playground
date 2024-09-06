@@ -1,7 +1,9 @@
 import torch
 from tqdm.auto import tqdm, trange
+import numpy as np
 
 from dataset import get_qmnist_loader
+from results import display_results
 
 
 def main():
@@ -35,6 +37,17 @@ def main():
                 correct += (predicted.cpu() == y).sum().item()
 
         print(f"Accuracy: {correct/total:.2f}")
+
+    pred_y = np.concat(
+        tuple(
+            model(x[0].cuda().view(-1, 28 * 28)).argmax(axis=1).cpu().detach().numpy()
+            for x in test_loader
+        )
+    )
+    test_y = (
+        torch.stack(tuple(x[1] for x in test_loader)).flatten().cpu().detach().numpy()
+    )
+    display_results(test_y, pred_y)
 
 
 if __name__ == "__main__":
