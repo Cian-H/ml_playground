@@ -9,17 +9,17 @@ from results import display_results
 def main():
     train_loader, test_loader = get_qmnist_loader()
     model = torch.nn.Sequential(
-        torch.nn.Conv2d(1, 16, kernel_size=3, padding=1),
+        torch.nn.Conv2d(1, 32, kernel_size=6, padding=1),
         torch.nn.ReLU(),
         torch.nn.MaxPool2d(2),
-        torch.nn.Conv2d(16, 32, kernel_size=3, padding=1),
+        torch.nn.Conv2d(32, 10, kernel_size=6, padding=1),
         torch.nn.ReLU(),
         torch.nn.MaxPool2d(2),
         torch.nn.Flatten(),
-        torch.nn.Linear(32 * 7 * 7, 10),
+        torch.nn.Linear(160, 10),
         torch.nn.Softmax(dim=1),
     ).cuda()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     criterion = torch.nn.CrossEntropyLoss().cuda()
 
     for epoch in trange(5, desc="Epoch"):
