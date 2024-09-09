@@ -14,4 +14,14 @@ be more like the ramblings of a madman converted into code.
 1. QMNIST classifier using a simple FFNN
 2. QMNIST classifier using a CNN
 3. QMNIST classifier using a transformer encoder
-3. QMNIST classifier using a simple boosted tree
+4. QMNIST classifier using a simple boosted tree
+
+# Results
+
+| Experiment | R² | Accuracy | RMS Error |
+| - | - | - | - |
+| 1 | 0.828241 | 0.913583 | 1.196773 |
+| 2 | -0.291347 | 0.099283 | 3.281511 |
+| 3 | -1.420184 | 0.113183 | 4.492381 |
+| 4 | 0.946000 | 0.976233 | 0.671044 |
+
