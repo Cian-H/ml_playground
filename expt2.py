@@ -22,9 +22,9 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
     criterion = torch.nn.CrossEntropyLoss().cuda()
 
-    for epoch in trange(5):
+    for epoch in trange(5, desc="Epoch"):
         model.train()
-        for x, y in tqdm(train_loader, desc="Training"):
+        for x, y in tqdm(train_loader, desc="Training", leave=False):
             x = x.cuda()
             y_pred = model(x)
             loss = criterion(y_pred, y.cuda())
@@ -36,14 +36,14 @@ def main():
         correct = 0
         total = 0
         with torch.no_grad():
-            for x, y in tqdm(test_loader, desc="Testing"):
+            for x, y in tqdm(test_loader, desc="Testing", leave=False):
                 x = x.cuda()
                 y_pred = model(x)
                 _, predicted = torch.max(y_pred, 1)
                 total += y.size(0)
                 correct += (predicted.cpu() == y).sum().item()
 
-        print(f"Accuracy: {correct/total:.2f}")
+        tqdm.write(f"Epoch {epoch} Accuracy: {correct/total:.2f}")
 
     pred_y = np.concat(
         tuple(
