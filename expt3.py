@@ -1,12 +1,29 @@
 import torch
+from typing import Optional
 from tqdm.auto import tqdm, trange
 import numpy as np
 
+import config
 from dataset import get_qmnist_loader
 from results import display_results
 
 
-def main():
+__config = config.get()["torch"]
+__app = config.get()["app"]
+
+
+@__app.command()
+def main(
+    lr: Optional[float] = __config["lr"],
+    momentum: Optional[float] = __config["momentum"],
+):
+    run()
+
+
+def run(
+    lr: Optional[float] = __config["lr"],
+    momentum: Optional[float] = __config["momentum"],
+):
     train_loader, test_loader = get_qmnist_loader()
     # A simple transformer model for solving the MNIST dataset
     model = torch.nn.Sequential(
@@ -19,7 +36,7 @@ def main():
         torch.nn.Linear(28 * 28, 10),
         torch.nn.Softmax(dim=1),
     ).cuda()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     criterion = torch.nn.CrossEntropyLoss().cuda()
 
     for epoch in trange(5, desc="Epoch"):
@@ -58,4 +75,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    __app()

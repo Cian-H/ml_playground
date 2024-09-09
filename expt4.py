@@ -1,11 +1,21 @@
 import numpy as np
 from xgboost import XGBClassifier
 
+import config
 from dataset import get_qmnist_numpy
 from results import display_results
 
 
+__config = config.get()["xgboost"]
+__app = config.get()["app"]
+
+
+@__app.command()
 def main():
+    run()
+
+
+def run():
     train, test = get_qmnist_numpy()
     train_X, train_y = train
     test_X, test_y = test
@@ -18,4 +28,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    __app()
