@@ -15,16 +15,18 @@ __app = config.get()["app"]
 @__app.command()
 def main(
     lr: Optional[float] = __config["lr"],
-    momentum: Optional[float] = __config["momentum"],
+    momentum_decay: Optional[float] = __config["momentum_decay"],
+    batch_size: Optional[int] = __config["batch_size"],
 ):
-    run()
+    run(lr=lr, momentum_decay=momentum_decay, batch_size=batch_size)
 
 
 def run(
     lr: Optional[float] = __config["lr"],
-    momentum: Optional[float] = __config["momentum"],
+    momentum_decay: Optional[float] = __config["momentum_decay"],
+    batch_size: Optional[int] = __config["batch_size"],
 ):
-    train_loader, test_loader = get_qmnist_loader()
+    train_loader, test_loader = get_qmnist_loader(batch_size=batch_size)
     # A simple transformer model for solving the MNIST dataset
     img_size = 28 * 28
     encode_size = round(28 * 28, -1)
@@ -39,7 +41,9 @@ def run(
         torch.nn.Linear(encode_size, 10),
         torch.nn.Softmax(dim=1),
     ).cuda()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.NAdam(
+        model.parameters(), lr=lr, momentum_decay=momentum_decay
+    )
     criterion = torch.nn.CrossEntropyLoss().cuda()
 
     for epoch in trange(5, desc="Epoch"):
@@ -72,7 +76,7 @@ def run(
         )
     )
     test_y = (
-        torch.stack(tuple(x[1] for x in test_loader)).flatten().cpu().detach().numpy()
+        torch.concat(tuple(x[1] for x in test_loader)).flatten().cpu().detach().numpy()
     )
     display_results(test_y, pred_y)
 
