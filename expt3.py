@@ -26,14 +26,17 @@ def run(
 ):
     train_loader, test_loader = get_qmnist_loader()
     # A simple transformer model for solving the MNIST dataset
+    img_size = 28 * 28
+    encode_size = round(28 * 28, -1)
     model = torch.nn.Sequential(
         torch.nn.Flatten(),
+        torch.nn.Linear(img_size, encode_size),
         torch.nn.TransformerEncoder(
-            torch.nn.TransformerEncoderLayer(d_model=28 * 28, nhead=8),
-            num_layers=2,
+            torch.nn.TransformerEncoderLayer(d_model=encode_size, nhead=10),
+            num_layers=1,
             enable_nested_tensor=False,
         ),
-        torch.nn.Linear(28 * 28, 10),
+        torch.nn.Linear(encode_size, 10),
         torch.nn.Softmax(dim=1),
     ).cuda()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
