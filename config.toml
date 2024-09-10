@@ -5,3 +5,5 @@ batch_size = 128
 n_epochs = 5
 
 [xgboost]
+n_jobs = 12
+device = "cuda"

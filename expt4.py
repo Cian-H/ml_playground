@@ -9,13 +9,16 @@ from results import display_results
 __config = config.get()["xgboost"]
 
 
-def run():
+def run(
+    n_jobs: int = __config["n_jobs"],
+    device: str = __config["device"],
+):
     train, test = get_qmnist_numpy()
     train_X, train_y = train
     test_X, test_y = test
     train_X = train_X.reshape(train_X.shape[0], np.prod(train_X.shape[1:]))
     test_X = test_X.reshape(test_X.shape[0], np.prod(test_X.shape[1:]))
-    model = XGBClassifier(n_jobs=12, device="cuda")
+    model = XGBClassifier(n_jobs=n_jobs, device=device)
     model.fit(train_X, train_y, eval_set=[(test_X, test_y)], verbose=True)
     pred_y = model.predict(test_X)
     return display_results(test_y, pred_y)
