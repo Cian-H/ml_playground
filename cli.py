@@ -20,11 +20,11 @@ for f in experiments:
 
 @app.command()
 def run(expts: str = "", md: bool = False):
-    expts = expts.split(",")
     to_run = run_funcs.copy()
-    if expts:
+    if expts != "":
+        expts = expts.split(",")
         to_run = {k: v for k, v in to_run.items() if k in expts}
-    to_run = dict(sorted(to_run.items(), key=lambda kv: expts.index(kv[0])))
+        to_run = dict(sorted(to_run.items(), key=lambda kv: expts.index(kv[0])))
     results = []
     for k, v in to_run.items():
         print(f"Running {k}...")
