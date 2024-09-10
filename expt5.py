@@ -1,5 +1,4 @@
 import torch
-from typing import Optional
 from tqdm.auto import tqdm, trange
 import numpy as np
 
@@ -9,7 +8,6 @@ from results import display_results
 
 
 __config = config.get()["torch"]
-__app = config.get()["app"]
 
 
 class Model(torch.nn.Module):
@@ -40,19 +38,11 @@ class Model(torch.nn.Module):
         return self.out(yh)
 
 
-@__app.command()
-def main(
-    lr: Optional[float] = __config["lr"],
-    momentum_decay: Optional[float] = __config["momentum_decay"],
-    batch_size: Optional[int] = __config["batch_size"],
-):
-    run(lr=lr, momentum_decay=momentum_decay, batch_size=batch_size)
-
-
 def run(
-    lr: Optional[float] = __config["lr"],
-    momentum_decay: Optional[float] = __config["momentum_decay"],
-    batch_size: Optional[int] = __config["batch_size"],
+    lr: float = __config["lr"],
+    momentum_decay: float = __config["momentum_decay"],
+    batch_size: int = __config["batch_size"],
+    n_epochs: int = __config["n_epochs"],
 ):
     train_loader, test_loader = get_qmnist_loader(batch_size=batch_size)
     # A simple transformer model for solving the MNIST dataset
@@ -62,7 +52,7 @@ def run(
     )
     criterion = torch.nn.CrossEntropyLoss().cuda()
 
-    for epoch in trange(5, desc="Epoch"):
+    for epoch in trange(n_epochs, desc="Epoch"):
         model.train()
         for x, y in tqdm(train_loader, desc="Training", leave=False):
             x = x.cuda().view(-1, 28, 28)
@@ -94,8 +84,10 @@ def run(
     test_y = (
         torch.concat(tuple(x[1] for x in test_loader)).flatten().cpu().detach().numpy()
     )
-    display_results(test_y, pred_y)
+    return display_results(test_y, pred_y)
 
 
 if __name__ == "__main__":
-    __app()
+    app = config.get()["app"]
+    app.command()(run)
+    app()

@@ -7,12 +7,6 @@ from results import display_results
 
 
 __config = config.get()["xgboost"]
-__app = config.get()["app"]
-
-
-@__app.command()
-def main():
-    run()
 
 
 def run():
@@ -24,8 +18,10 @@ def run():
     model = XGBClassifier(n_jobs=12, device="cuda")
     model.fit(train_X, train_y, eval_set=[(test_X, test_y)], verbose=True)
     pred_y = model.predict(test_X)
-    display_results(test_y, pred_y)
+    return display_results(test_y, pred_y)
 
 
 if __name__ == "__main__":
-    __app()
+    app = config.get()["app"]
+    app.command()(run)
+    app()

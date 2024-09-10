@@ -2,6 +2,12 @@ from sklearn import metrics
 import pandas as pd
 import io
 import subprocess
+from rich.markdown import Markdown
+
+import config
+
+
+__rc = config.get()["rc"]
 
 
 def calculate_results(expected_y, predicted_y):
@@ -16,10 +22,12 @@ def calculate_results(expected_y, predicted_y):
 
 def display_results(expected_y, predicted_y):
     print(f"{' Experiment Results ':=^120}")
-    print(calculate_results(expected_y, predicted_y))
+    out = calculate_results(expected_y, predicted_y)
+    __rc.print(Markdown(out.to_markdown()))
     cm = metrics.confusion_matrix(expected_y, predicted_y)
     cm_fig = metrics.ConfusionMatrixDisplay(cm).plot()
     display_figure(cm_fig.figure_)
+    return out
 
 
 def display_figure(fig):
