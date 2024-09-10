@@ -18,6 +18,7 @@ to half funcitoning code.
 4. QMNIST classifier using a boosted decision tree classifier
 5. QMNIST classifier using a RNN
 6. QMNIST classifier using a boosted random forest classifier
+7. QMNIST support vector classifier
 
 # Results
 
@@ -29,3 +30,4 @@ to half funcitoning code.
 | expt4        | 0.946000 |   0.976233 |    0.67104  |
 | expt5        | 0.853349 |   0.933650 |    1.10585  |
 | expt6        | 0.792609 |   0.894017 |    1.31507  |
+| expt7        | 0.863442 |   0.934100 |    1.06711  |
