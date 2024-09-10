@@ -15,8 +15,9 @@ to half funcitoning code.
 1. QMNIST classifier using a simple FFNN
 2. QMNIST classifier using a CNN
 3. QMNIST classifier using a transformer encoder
-4. QMNIST classifier using a simple boosted tree
+4. QMNIST classifier using a boosted decision tree classifier
 5. QMNIST classifier using a RNN
+6. QMNIST classifier using a boosted random forest classifier
 
 # Results
 
